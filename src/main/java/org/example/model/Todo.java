@@ -14,7 +14,7 @@ public class Todo {
     public Todo() {
     }
 
-    public Todo(String title, String description, Date deadline, boolean done, int assignee_Id) {
+    public Todo(int todo_Id, String title, String description, Date deadline, boolean done, int assignee_Id) {
         this.todo_Id = todo_Id;
         this.title = title;
         this.description = description;

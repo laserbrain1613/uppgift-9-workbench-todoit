@@ -7,6 +7,15 @@ public class Person {
     private String first_Name;
     private String last_Name;
 
+    public Person() {
+    }
+
+    public Person(int id, String first_Name, String last_Name) {
+        this.person_id = id;
+        this.first_Name = first_Name;
+        this.last_Name = last_Name;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -49,14 +58,5 @@ public class Person {
 
     public void setLast_Name(String last_Name) {
         this.last_Name = last_Name;
-    }
-
-    public Person(int id, String first_Name, String last_Name) {
-        this.person_id = id;
-        this.first_Name = first_Name;
-        this.last_Name = last_Name;
-    }
-
-    public Person() {
     }
 }
