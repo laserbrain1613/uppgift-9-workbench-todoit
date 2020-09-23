@@ -25,7 +25,7 @@ public class PeopleDaoImpl implements PeopleDao {
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()) {
                 result = new Person(
-                        rs.getInt(1),
+                        rs.getInt(1), // auto-incremented value fetched from RETURN_GENERATED_KEYS
                         person.getFirst_Name(),
                         person.getFirst_Name());
             }
@@ -34,7 +34,6 @@ public class PeopleDaoImpl implements PeopleDao {
         }
         return result; // Empty person (rs failed) or whatever rs added to result
     }
-
 
     @Override
     public Collection<Person> findAll() {
@@ -81,13 +80,14 @@ public class PeopleDaoImpl implements PeopleDao {
 
     @Override
     public Collection<Person> findByName(String name) {
-        final String FIND_BY_NAME = "SELECT * FROM person WHERE name LIKE ?";
+        final String FIND_BY_NAME = "SELECT * FROM person WHERE first_name LIKE ? OR last_name LIKE ?";
         List<Person> result = new ArrayList<>();
 
         try {
             Connection connection = MySQLConnection.mysqlConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
             preparedStatement.setString(1, "%" + name + "%");
+            preparedStatement.setString(2, "%" + name + "%");
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
