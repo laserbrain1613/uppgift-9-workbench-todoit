@@ -1,5 +1,6 @@
 package org.example.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -7,20 +8,20 @@ public class Todo {
     private int todo_Id;
     private String title;
     private String description;
-    private Date deadline;
+    private LocalDate deadline;
     private boolean done;
-    private int assignee_Id;
+    private Person assignee;
 
     public Todo() {
     }
 
-    public Todo(int todo_Id, String title, String description, Date deadline, boolean done, int assignee_Id) {
+    public Todo(int todo_Id, String title, String description, LocalDate deadline, boolean done, Person assignee) {
         this.todo_Id = todo_Id;
         this.title = title;
         this.description = description;
         this.deadline = deadline;
         this.done = done;
-        this.assignee_Id = assignee_Id;
+        this.assignee = assignee;
     }
 
     public int getTodo_Id() {
@@ -43,11 +44,11 @@ public class Todo {
         this.description = description;
     }
 
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 
@@ -59,12 +60,12 @@ public class Todo {
         this.done = done;
     }
 
-    public int getAssignee_Id() {
-        return assignee_Id;
+    public Person getAssignee() {
+        return assignee;
     }
 
-    public void setAssignee_Id(int assignee_Id) {
-        this.assignee_Id = assignee_Id;
+    public void setAssignee(Person assignee) {
+        this.assignee = assignee;
     }
 
     @Override
@@ -74,7 +75,7 @@ public class Todo {
         Todo todo = (Todo) o;
         return todo_Id == todo.todo_Id &&
                 done == todo.done &&
-                assignee_Id == todo.assignee_Id &&
+                assignee == todo.assignee &&
                 Objects.equals(title, todo.title) &&
                 Objects.equals(description, todo.description) &&
                 Objects.equals(deadline, todo.deadline);
@@ -82,7 +83,7 @@ public class Todo {
 
     @Override
     public int hashCode() {
-        return Objects.hash(todo_Id, title, description, deadline, done, assignee_Id);
+        return Objects.hash(todo_Id, title, description, deadline, done, assignee);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class Todo {
                 ", description='" + description + '\'' +
                 ", deadline=" + deadline +
                 ", done=" + done +
-                ", assignee_Id=" + assignee_Id +
+                ", assignee=" + assignee +
                 '}';
     }
 }

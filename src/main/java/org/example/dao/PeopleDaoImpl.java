@@ -13,12 +13,12 @@ public class PeopleDaoImpl implements PeopleDao {
 
     @Override
     public Person create(Person person) {
-        final String CREATE = "INSERT INTO person (first_name, last_name) VALUES (?,?)";
+        final String CREATE = "INSERT INTO person (first_name, last_name) VALUES (?, ?)"; // id is auto-incremented
         Person result = new Person();
 
-        try {
-            Connection connection = MySQLConnection.mysqlConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
+        try (Connection connection = MySQLConnection.mysqlConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)
+        ) {
             preparedStatement.setString(1, person.getFirst_Name());
             preparedStatement.setString(2, person.getLast_Name());
             preparedStatement.execute();
@@ -27,7 +27,8 @@ public class PeopleDaoImpl implements PeopleDao {
                 result = new Person(
                         rs.getInt(1), // auto-incremented value fetched from RETURN_GENERATED_KEYS
                         person.getFirst_Name(),
-                        person.getFirst_Name());
+                        person.getLast_Name()
+                );
             }
         } catch (SQLException | MySQLConnectionException e) {
             e.printStackTrace();
@@ -40,9 +41,9 @@ public class PeopleDaoImpl implements PeopleDao {
         final String FIND_ALL = "SELECT * FROM person";
         List<Person> result = new ArrayList<>();
 
-        try {
-            Connection connection = MySQLConnection.mysqlConnection();
-            Statement statement = connection.createStatement(); // Statement: HK-47 is ready to serve, master.
+        try (Connection connection = MySQLConnection.mysqlConnection();
+             Statement statement = connection.createStatement() // Statement: HK-47 is ready to serve, master.
+        ) {
             ResultSet rs = statement.executeQuery(FIND_ALL); // Query: Can I kill him now, master?
 
             while (rs.next()) {
@@ -61,12 +62,12 @@ public class PeopleDaoImpl implements PeopleDao {
     public Person findById(int id) {
         final String FIND_BY_ID = "SELECT * FROM person WHERE person_id = ?";
         Person result = new Person();
-        try {
-            Connection connection = MySQLConnection.mysqlConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
+        try (Connection connection = MySQLConnection.mysqlConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID)
+        ) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) { // Only expecting one row because ID is unique
+            if (rs.next()) { // Only expecting one row because person_id is unique
                 result = new Person(
                         rs.getInt(1),
                         rs.getString(2),
@@ -83,9 +84,9 @@ public class PeopleDaoImpl implements PeopleDao {
         final String FIND_BY_NAME = "SELECT * FROM person WHERE first_name LIKE ? OR last_name LIKE ?";
         List<Person> result = new ArrayList<>();
 
-        try {
-            Connection connection = MySQLConnection.mysqlConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
+        try (Connection connection = MySQLConnection.mysqlConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME)
+        ) {
             preparedStatement.setString(1, "%" + name + "%");
             preparedStatement.setString(2, "%" + name + "%");
             ResultSet rs = preparedStatement.executeQuery();
@@ -106,13 +107,9 @@ public class PeopleDaoImpl implements PeopleDao {
     public Person update(Person person) {
         final String UPDATE = "UPDATE person SET first_name = ?, last_name = ? WHERE person_id = ?";
 
-        if (findById(person.getId()).equals(new Person())) { // (0, null, null)
-            throw new IllegalArgumentException("ID does not exist in database");
-        }
-
-        try {
-            Connection connection = MySQLConnection.mysqlConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
+        try (Connection connection = MySQLConnection.mysqlConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)
+        ) {
             preparedStatement.setString(1, person.getFirst_Name());
             preparedStatement.setString(2, person.getLast_Name());
             preparedStatement.setInt(3, person.getId());
@@ -147,5 +144,3 @@ public class PeopleDaoImpl implements PeopleDao {
 
 
 }
-
-
