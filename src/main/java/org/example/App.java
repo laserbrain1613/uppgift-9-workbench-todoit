@@ -1,28 +1,25 @@
 package org.example;
 
-import org.example.dao.PeopleDaoImpl;
 import org.example.data.AppManager;
 import org.example.model.Person;
 import org.example.model.Todo;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
 
 public class App {
     public static void main(String[] args) {
         AppManager appManager = new AppManager();
 
-//        PeopleDaoImpl peopleDao = new PeopleDaoImpl();
         Person testPerson1 = new Person(80, "Nils", "Karlsson");
         Person testPerson2 = new Person(443, "Karl", "Nilsson");
-        Person testPerson3 = new Person(21, "Nils-Karlsson", "Karlsson-Nils");
+        Person testPerson3 = new Person(5, "Nils-Karlsson", "Karlsson-Nils");
         Person updatePerson = new Person(3, "¨Katja", "Karlsson");
         Person updatePerson2 = new Person(3, "Pricken", "Kattsson");
         Person addPerson = appManager.people.findById(1);
         Todo todo1 = new Todo(0, "test1", "test description1", LocalDate.now(), false, updatePerson2);
         Todo todo2 = new Todo(0, "test1", "test description1", LocalDate.now(), false, addPerson);
-        Todo todo3 = new Todo(0, "test1", "test description1", LocalDate.now(), false, null);
+        Todo todo3 = new Todo(10, "test2", "test description2", LocalDate.now(), false, testPerson3);
+        Todo updateTodo = new Todo(21, "update", "update description1", LocalDate.now(), true, testPerson3);
 
 //        Person addPerson = appManager.people.findById(1);
 //        Todo createTodo = appManager.todoitems.create(todo2);
@@ -30,22 +27,26 @@ public class App {
 //
 //        Todo createTodo2 = appManager.todoitems.create(todo3);
 //        System.out.println(createTodo2);
-
 //        Collection<Todo> stuff = appManager.todoitems.findAll();
 //        stuff.forEach(System.out::println);
 //
 //        8, 21, 22
 
-        Todo findId1 = appManager.todoitems.findById(25);
-        Todo findId2 = appManager.todoitems.findById(26);
-        Todo findId3 = appManager.todoitems.findById(27);
+//        Todo findId1 = appManager.todoitems.findById(25);
+//        Todo findId2 = appManager.todoitems.findById(26);
+//        Todo findId3 = appManager.todoitems.findById(27);
+//
+//        System.out.println(findId1 + "\n" + findId2 + "\n" + findId3);
+//        Collection<Todo> unassignedTodoItems = appManager.todoitems.findByUnassignedTodoItems();
+//        unassignedTodoItems.forEach(System.out::println);
 
-        System.out.println(findId1 + "\n" + findId2 + "\n" + findId3);
+//        Todo update = appManager.todoitems.update(updateTodo);
+//        System.out.println(update);
 
-
-
-
-
+//        boolean result = appManager.todoitems.deleteById(22);
+//        boolean result2 = appManager.todoitems.deleteById(25);
+//        boolean result3 = appManager.todoitems.deleteById(500);
+//        System.out.println(result + "\n" + result2 + "\n" + result3);
 
 //        appManager.people.findAll().forEach(System.out::println);
 
